@@ -18,29 +18,35 @@ def createCNN():
     """
     # 1st Convolution layer
     model = Sequential()
-    model.add(Convolution2D(8, 5, 5, border_mode='valid', input_shape=(200, 200, 3)))
+    model.add(Convolution2D(20, 10, 10, border_mode='valid', input_shape=(3, 200, 200)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    #model.add(Dropout(0.5))
 
     # 2nd Convolution layer
-    model.add(Convolution2D(16, 10, 10, border_mode='valid'))
+    model.add(Convolution2D(40, 5, 5, border_mode='valid'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    #model.add(Dropout(0.5))
 
+    """"
     # 3rd Convolution layer
-    model.add(Convolution2D(32, 5, 5, border_mode='valid'))
+    model.add(Convolution2D(24, 5, 5, border_mode='valid'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.2))
 
     # 4rd Convolution layer
-    model.add(Convolution2D(32, 3, 3, border_mode='valid'))
+    model.add(Convolution2D(36, 3, 3, border_mode='valid'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.2))
+    """
 
     # Dense
     model.add(Flatten())
     print model.summary()
-    model.add(Dense(32, init='normal'))
+    model.add(Dense(1000, init='normal'))
     model.add(Activation('tanh'))
 
     # Softmax
@@ -68,8 +74,8 @@ index = [ i for i in range(len(data)) ]
 random.shuffle(index)
 data = data[index]
 label = label[index]
-(x_train, x_val) = (data[0:55], data[55:])
-(y_train, y_val) = (label[0:55], label[55:])
+(x_train, x_val) = (data[0:60], data[55:])
+(y_train, y_val) = (label[0:60], label[55:])
 
 # Train
 model.fit(x_train, y_train, batch_size=5, 

@@ -59,7 +59,7 @@ def test_demo():
         Testing demo function
     """
     model = loadModel("./model/model.pkl")
-    img = Image.open("img1.jpg")
-    showResult(test(model, img))
+    img = Image.open("./Img/Demo/orange1.jpg")
+    print test(model, img)
 
-test_demo()
+#test_demo()

@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import cPickle
+import sys
 
 from loader import load_img
 from keras.layers.core import Dropout, Activation, Flatten, Dense
@@ -12,6 +13,7 @@ from keras import backend as K
 from keras.models import Sequential
 
 trainNumber = 100
+sys.setrecursionlimit(10000)
 
 def createCNN():
     """
@@ -79,6 +81,6 @@ label = label[index]
 
 # Train
 model.fit(x_train, y_train, batch_size=20, 
-    validation_data=(x_val, y_val), nb_epoch=25)
+    validation_data=(x_val, y_val), nb_epoch=40)
 print "==> Finish training"
-cPickle.dump(model, open("./model.pkl", "wb"))
+model.save('./model.h5')

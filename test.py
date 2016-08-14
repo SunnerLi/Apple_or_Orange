@@ -3,7 +3,8 @@ import numpy as np
 import cPickle
 import Image
 
-from keras.models import Sequential
+from keras.models import Sequential, load_model
+from keras.optimizers import SGD
 from keras import backend as K
 
 def test(model, img):
@@ -23,8 +24,10 @@ def test(model, img):
     data = data.astype('float32')
 
     # Predict
-    predict = K.function([model.layers[0].input, K.learning_phase()], [model.layers[10].output])
-    return predict([data, 1])
+    opt_method = SGD(lr=0.01, decay=1e-6, momentum=0.8, nesterov=True)
+    model.compile(loss='categorical_crossentropy', optimizer=opt_method, metrics=['accuracy'])
+    predict = K.function([model.layers[0].input, K.learning_phase()], [model.layers[18].output])
+    return predict([data, 0])
 
 def loadModel(path):
     """
@@ -33,7 +36,7 @@ def loadModel(path):
         Return: the keras model
     """
     print "==> Start to load model <=="
-    model = cPickle.load(open(path, "rb"))
+    model = load_model(path)
     print "==> Loading model Done<=="
     return model
 
@@ -47,12 +50,12 @@ def showResult(arr, imgName=None):
         if imgName == None:
             print "It's apple !"
         else:
-            print "It's apple in ", imgName
+            print "It's apple in ", imgName, arr[0][0]
     else:
         if imgName == None:
             print "It's orange !"
         else:
-            print "It's orange in ", imgName
+            print "It's orange in ", imgName, arr[0][0]
 
 def test_demo():
     """

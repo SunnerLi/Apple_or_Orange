@@ -13,8 +13,11 @@ def rmAll():
     """
         Remove all content in the All folder
     """
-    for name in os.listdir("./All"):
-        os.remove(name)
+    if os.path.exists("./All"):
+        for name in os.listdir("./All"):
+            os.remove(name)
+    else:
+        os.mkdir("./All")
         
 def listdir(path):
     """

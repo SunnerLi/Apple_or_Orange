@@ -4,11 +4,14 @@ import cPickle
 
 from loader import load_img
 from keras.layers.core import Dropout, Activation, Flatten, Dense
+from keras.layers.normalization import BatchNormalization
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD
 from keras.utils import np_utils
 from keras import backend as K
 from keras.models import Sequential
+
+trainNumber = 100
 
 def createCNN():
     """
@@ -18,31 +21,28 @@ def createCNN():
     """
     # 1st Convolution layer
     model = Sequential()
-    model.add(Convolution2D(20, 10, 10, border_mode='valid', input_shape=(3, 200, 200)))
+    model.add(Convolution2D(48, 11, 11, border_mode='valid', input_shape=(3, 200, 200), subsample=(4, 4)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    #model.add(Dropout(0.5))
+    model.add(BatchNormalization())
 
     # 2nd Convolution layer
-    model.add(Convolution2D(40, 5, 5, border_mode='valid'))
+    model.add(Convolution2D(128, 5, 5, border_mode='valid'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    #model.add(Dropout(0.5))
+    model.add(BatchNormalization())
 
-    """"
+    
     # 3rd Convolution layer
-    model.add(Convolution2D(24, 5, 5, border_mode='valid'))
+    model.add(Convolution2D(192, 3, 3, border_mode='valid'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.2))
 
     # 4rd Convolution layer
-    model.add(Convolution2D(36, 3, 3, border_mode='valid'))
+    model.add(Convolution2D(80, 3, 3, border_mode='valid'))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.2))
-    """
-
+    
     # Dense
     model.add(Flatten())
     print model.summary()
@@ -74,11 +74,11 @@ index = [ i for i in range(len(data)) ]
 random.shuffle(index)
 data = data[index]
 label = label[index]
-(x_train, x_val) = (data[0:60], data[55:])
-(y_train, y_val) = (label[0:60], label[55:])
+(x_train, x_val) = (data[0:trainNumber], data[trainNumber:])
+(y_train, y_val) = (label[0:trainNumber], label[trainNumber:])
 
 # Train
-model.fit(x_train, y_train, batch_size=5, 
-    validation_data=(x_val, y_val), nb_epoch=10)
+model.fit(x_train, y_train, batch_size=20, 
+    validation_data=(x_val, y_val), nb_epoch=25)
 print "==> Finish training"
 cPickle.dump(model, open("./model.pkl", "wb"))

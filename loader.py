@@ -20,8 +20,8 @@ def load_img():
         img.save("./temp/" + imgs[i])
 
     # Load the images again and product the labels
-    datas = np.empty((70, 3, 200, 200), dtype="float32")
-    labls = np.empty((70), dtype="uint8")
+    datas = np.empty((147, 3, 200, 200), dtype="float32")
+    labls = np.empty((147), dtype="uint8")
     imgs = os.listdir("./temp")
     print len(imgs)
     for i in range(len(imgs)):

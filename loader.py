@@ -2,6 +2,8 @@ import os
 import Image
 import numpy as np
 
+numberOfImgs = 424
+
 def load_img():
     """
         Load training image
@@ -20,8 +22,8 @@ def load_img():
         img.save("./temp/" + imgs[i])
 
     # Load the images again and product the labels
-    datas = np.empty((147, 3, 200, 200), dtype="float32")
-    labls = np.empty((147), dtype="uint8")
+    datas = np.empty((numberOfImgs, 3, 200, 200), dtype="float32")
+    labls = np.empty((numberOfImgs), dtype="uint8")
     imgs = os.listdir("./temp")
     print len(imgs)
     for i in range(len(imgs)):

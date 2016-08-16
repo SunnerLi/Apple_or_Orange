@@ -26,7 +26,7 @@ def test(model, img):
     # Predict
     opt_method = SGD(lr=0.01, decay=1e-6, momentum=0.8, nesterov=True)
     model.compile(loss='categorical_crossentropy', optimizer=opt_method, metrics=['accuracy'])
-    predict = K.function([model.layers[0].input, K.learning_phase()], [model.layers[6].output])
+    predict = K.function([model.layers[0].input, K.learning_phase()], [model.layers[18].output])
     return predict([data, 0])
 
 def loadModel(path):

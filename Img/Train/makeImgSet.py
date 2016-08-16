@@ -42,6 +42,7 @@ def main(prefix, imgList):
     for name in imgList:
         img = Image.open(name)
         # If the image isn't exist, save it!
+        print name
         exist_, imgTuple = isExist(img)
         if exist_:  
             main_printSkip("Origin", name, imgTuple, len(imgList)-imgCount)
@@ -118,6 +119,7 @@ def rotate(prefix, imgList, imgCount):
     for name in imgList:
         img = Image.open(name)
         img1 = img.transpose(Image.FLIP_LEFT_RIGHT)
+
         # If the image isn't exist, save it!
         exist_, imgTuple = isExist(img1)
         if exist_:  

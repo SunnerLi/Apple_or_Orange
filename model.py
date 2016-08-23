@@ -138,7 +138,21 @@ def init_tensorflowCIFAR(shape, name=None):
     m = np.ones(shape)
     return K.variable(m/10, name=name)
 
-def create_tensorflowCIFAR10():
+def init_tensorflowCIFAR_beta(shape, name=None):
+    """
+        Callback function defined in github to initialize as 0.75
+    """
+    m = np.ones(shape)
+    return K.variable(3*m/4, name=name)
+
+def init_tensorflowCIFAR_gamma(shape, name=None):
+    """
+        Callback function defined in github to initialize as 0.001/9.0
+    """
+    m = np.ones(shape)
+    return K.variable(m/9000, name=name)
+
+def create_tensorflow_CIFAR10():
     """
         Use keras to create CIFAR-10 built in tensorflow github example
 
@@ -149,21 +163,21 @@ def create_tensorflowCIFAR10():
     model.add(Convolution2D(64, 5, 5, border_mode='valid', input_shape=(3, 200, 200), bias=True))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(3, 3), strides=(2,2)))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(beta_init=init_tensorflowCIFAR_beta, gamma_init=init_tensorflowCIFAR_gamma))
 
     # 2nd Convolution layer
-    model.add(Convolution2D(32, 3, 3, border_mode='valid'))
+    model.add(Convolution2D(64, 5, 5, border_mode='valid'))
     model.add(Activation('relu'))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(beta_init=init_tensorflowCIFAR_beta, gamma_init=init_tensorflowCIFAR_gamma))
     model.add(MaxPooling2D(pool_size=(3, 3), strides=(2,2)))
     
     # 1st Dense
     model.add(Flatten())
-    model.add(Dense(384, init=init_tensorflowCIFAR))
+    model.add(Dense(384, init=init_tensorflowCIFAR, bias=True))
     model.add(Activation('relu'))
 
     # 2nd Dense
-    model.add(Dense(192, init=init_tensorflowCIFAR))
+    model.add(Dense(192, init=init_tensorflowCIFAR, bias=True))
     model.add(Activation('relu'))
 
     # Softmax
@@ -173,7 +187,7 @@ def create_tensorflowCIFAR10():
     print model.summary()
     return model
 
-def create_smallTensorflowCIFAR10():
+def create_Tensorflow_smallCIFAR10():
     """
         Use keras to create CIFAR-10 built in tensorflow github example
 
@@ -181,7 +195,7 @@ def create_smallTensorflowCIFAR10():
     """
     # 1st Convolution layer
     model = Sequential()
-    model.add(Convolution2D(64, 5, 5, border_mode='valid', input_shape=(3, 200, 200), bias=True))
+    model.add(Convolution2D(64, 3, 3, border_mode='valid', input_shape=(3, 200, 200), bias=True))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(3, 3), strides=(2,2)))
     model.add(BatchNormalization())
@@ -208,7 +222,49 @@ def create_smallTensorflowCIFAR10():
     print model.summary()
     return model
 
-def create_VGG16(weights_path=None):
+def create_Keras_CIFAR10():
+    """
+        Use keras to create CIFAR10 example
+
+        Return: the model object of keras
+    """
+    model = Sequential()
+
+    # 1st Convolution layer
+    model.add(Convolution2D(32, 3, 3, border_mode='same', input_shape=(3, 200, 200)))
+    model.add(Activation('relu'))
+
+    # 2nd Convolution layer
+    model.add(Convolution2D(32, 3, 3))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
+
+    # 3rd Convolution layer
+    model.add(Convolution2D(64, 3, 3, border_mode='same'))
+    model.add(Activation('relu'))
+
+    # 4rd Convolution layer
+    model.add(Convolution2D(64, 3, 3))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
+
+    # Dense
+    model.add(Flatten())
+    model.add(Dense(512))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+
+    # Softmax
+    model.add(Dense(nb_classes))
+    model.add(Activation('softmax'))
+
+    print model.summary()
+    return model
+
+
+def create_Keras_VGG16(weights_path=None):
     """
         Use keras to create VGG16 example
 
@@ -256,6 +312,32 @@ def create_VGG16(weights_path=None):
     model.add(Dropout(0.5))
     model.add(Dense(16, activation='relu'))
     model.add(Dropout(0.5))
+    model.add(Dense(2, activation='softmax'))
+
+    print model.summary()
+    return model
+
+def create_LeNet(weights_path=None):
+    """
+        Use keras to create LeNet structure
+
+        Return: the model object of keras
+    """
+    model = Sequential()
+
+    # 1st Convolution layer
+    model.add(Convolution2D(8, 28, 28, border_mode='same', input_shape=(3, 200, 200)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2,2)))
+
+    # 2nd Convolution layer
+    model.add(Convolution2D(20, 10, 10, border_mode='same'))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2,2)))
+
+    # Dense
+    model.add(Flatten())
+    model.add(Dense(120, activation='relu'))
     model.add(Dense(2, activation='softmax'))
 
     print model.summary()

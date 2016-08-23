@@ -13,7 +13,7 @@ from keras.utils import np_utils
 from keras import backend as K
 from keras.models import Sequential
 
-trainNumber = 400
+trainNumber = 360
 sys.setrecursionlimit(10000)
 
 """
@@ -26,7 +26,7 @@ label = np_utils.to_categorical(label, 2)
 print "==> Finish loading data"
 
 # Build the model
-model = create_sunnerNet()
+model = create_tinyPerceptron()
 opt_method = SGD(lr=0.01, decay=1e-6, momentum=0.8, nesterov=True)
 model.compile(loss='categorical_crossentropy', optimizer=opt_method, metrics=['accuracy'])
 print "==> Finish create model"

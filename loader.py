@@ -2,7 +2,7 @@ import os
 import Image
 import numpy as np
 
-numberOfImgs = 407
+numberOfImgs = 472
 
 def load_img():
     """

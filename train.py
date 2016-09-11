@@ -13,7 +13,7 @@ from keras.utils import np_utils
 from keras import backend as K
 from keras.models import Sequential
 
-trainNumber = 425
+trainNumber = 800
 sys.setrecursionlimit(10000)
 
 """
